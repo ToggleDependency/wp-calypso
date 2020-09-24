@@ -98,7 +98,7 @@ function setSessionCookies( window, onComplete ) {
 function auth( window, onAuthorized ) {
 	let currentRequest;
 
-	ipc.on( 'user-auth', function ( event, user, token ) {
+	ipc.on( 'user-auth', async function ( event, user, token ) {
 		if ( user && user.data ) {
 			const userData = user.data;
 			if ( currentRequest && currentRequest.username === userData.username ) {

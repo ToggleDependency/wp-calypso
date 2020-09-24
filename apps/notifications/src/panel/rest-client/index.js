@@ -7,17 +7,10 @@ import { store } from '../state';
 import actions from '../state/actions';
 
 import getAllNotes from '../state/selectors/get-all-notes';
-import getIsNoteApproved from '../state/selectors/get-is-note-approved';
 
 import repliesCache from '../comment-replies-cache';
 
-import {
-	fetchNote,
-	listNotes,
-	markReadStatus,
-	sendLastSeenTime,
-	subscribeToNoteStream,
-} from './wpcom';
+import { fetchNote, listNotes, sendLastSeenTime, subscribeToNoteStream } from './wpcom';
 
 const debug = require( 'debug' )( 'notifications:rest-client' );
 
@@ -334,16 +327,6 @@ function ready() {
 	const latestType = get( notes.slice( -1 )[ 0 ], 'type', null );
 	store.dispatch( { type: 'APP_RENDER_NOTES', newNoteCount, latestType } );
 
-	for ( let i = 0; i < newNotes.length; i++ ) {
-		const note = newNotes[ i ];
-		if ( setlatestTimestampSeen( note.timestamp ) ) {
-			debug( 'Dispatching note to Desktop app: ', note );
-
-			const isApproved = getIsNoteApproved( store.getState(), note );
-			store.dispatch( { type: 'NOTIFY_DESKTOP_NEW_NOTE', note, isApproved } );
-		}
-	}
-
 	this.hasNewNoteData = false;
 	this.firstRender = false;
 }
@@ -463,11 +446,6 @@ function refreshNotes() {
 	getNotesList.call( this );
 }
 
-function markNoteAsRead( noteId, isRead, callback ) {
-	debug( `Marking note with id ${ noteId } as read...` );
-	markReadStatus( noteId, isRead, callback );
-}
-
 function handleStorageEvent( event ) {
 	if ( ! event ) {
 		return;
@@ -551,6 +529,5 @@ Client.prototype.updateLastSeenTime = updateLastSeenTime;
 Client.prototype.loadMore = loadMore;
 Client.prototype.refreshNotes = refreshNotes;
 Client.prototype.setVisibility = setVisibility;
-Client.prototype.markNoteAsRead = markNoteAsRead;
 
 export default Client;
