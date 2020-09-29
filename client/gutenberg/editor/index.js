@@ -12,7 +12,7 @@ import config from 'config';
 import { makeLayout, render as clientRender } from 'controller';
 
 export default function () {
-	page( '/block-editor', '/block-editor/post' );
+	page( '', '/post' );
 
 	page(
 		'/site-editor/:site?',
@@ -24,9 +24,9 @@ export default function () {
 		clientRender
 	);
 
-	page( '/block-editor/post', siteSelection, sites, makeLayout, clientRender );
+	page( '/post', siteSelection, sites, makeLayout, clientRender );
 	page(
-		'/block-editor/post/:site/:post?',
+		'/post/:site/:post?',
 		siteSelection,
 		redirect,
 		authenticate,
@@ -34,11 +34,11 @@ export default function () {
 		makeLayout,
 		clientRender
 	);
-	page( '/block-editor/post/:site?', siteSelection, redirect, makeLayout, clientRender );
+	page( '/post/:site?', siteSelection, redirect, makeLayout, clientRender );
 
-	page( '/block-editor/page', siteSelection, sites, makeLayout, clientRender );
+	page( '/page', siteSelection, sites, makeLayout, clientRender );
 	page(
-		'/block-editor/page/:site/:post?',
+		'/page/:site/:post?',
 		siteSelection,
 		redirect,
 		authenticate,
@@ -46,12 +46,12 @@ export default function () {
 		makeLayout,
 		clientRender
 	);
-	page( '/block-editor/page/:site?', siteSelection, redirect, makeLayout, clientRender );
+	page( '/page/:site?', siteSelection, redirect, makeLayout, clientRender );
 
 	if ( config.isEnabled( 'manage/custom-post-types' ) ) {
-		page( '/block-editor/edit/:customPostType', siteSelection, sites, makeLayout, clientRender );
+		page( '/edit/:customPostType', siteSelection, sites, makeLayout, clientRender );
 		page(
-			'/block-editor/edit/:customPostType/:site/:post?',
+			'/edit/:customPostType/:site/:post?',
 			siteSelection,
 			redirect,
 			authenticate,
@@ -59,17 +59,9 @@ export default function () {
 			makeLayout,
 			clientRender
 		);
-		page(
-			'/block-editor/edit/:customPostType/:site?',
-			siteSelection,
-			redirect,
-			makeLayout,
-			clientRender
-		);
+		page( '/edit/:customPostType/:site?', siteSelection, redirect, makeLayout, clientRender );
 	}
 
-	page( '/block-editor/*/*', '/block-editor/post' );
-	page( '/block-editor/:site', ( context ) =>
-		page.redirect( `/block-editor/post/${ context.params.site }` )
-	);
+	page( '/*/*', '/post' );
+	page( '/:site', ( context ) => page.redirect( `/block-editor/post/${ context.params.site }` ) );
 }
