@@ -34,9 +34,11 @@ export default function () {
 		makeLayout,
 		clientRender
 	);
+
 	page( '/post/:site?', siteSelection, redirect, makeLayout, clientRender );
 
 	page( '/page', siteSelection, sites, makeLayout, clientRender );
+
 	page(
 		'/page/:site/:post?',
 		siteSelection,
