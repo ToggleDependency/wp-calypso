@@ -25,6 +25,7 @@ export default function () {
 	);
 
 	page( '/post', siteSelection, sites, makeLayout, clientRender );
+
 	page(
 		'/post/:site/:post?',
 		siteSelection,
@@ -63,6 +64,25 @@ export default function () {
 		);
 		page( '/edit/:customPostType/:site?', siteSelection, redirect, makeLayout, clientRender );
 	}
+
+	// Redirect old block-editor routes.
+	page( '/block-editor/post/', '/post' );
+	page( '/block-editor/post/:site/:post?', ( { params = {} } ) => {
+		const { site, post: postId } = params;
+		if ( postId ) {
+			return page.redirect( `/post/${ site }/${ postId }` );
+		}
+		page.redirect( `/post/${ site }/` );
+	} );
+
+	page( '/block-editor/page/', '/page' );
+	page( '/block-editor/page/:site/:page?', ( { params = {} } ) => {
+		const { site, page: pageId } = params;
+		if ( pageId ) {
+			return page.redirect( `/page/${ site }/${ pageId }` );
+		}
+		page.redirect( `/page/${ site }/` );
+	} );
 
 	page( '/*/*', '/post' );
 	page( '/:site', ( context ) => page.redirect( `/block-editor/post/${ context.params.site }` ) );
