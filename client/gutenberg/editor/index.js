@@ -26,6 +26,8 @@ export default function () {
 
 	page( '/post', siteSelection, sites, makeLayout, clientRender );
 
+	page( '/post/new', () => page.redirect( '/post' ) ); // redirect from beep-beep-boop
+
 	page(
 		'/post/:site/:post?',
 		siteSelection,
@@ -39,6 +41,8 @@ export default function () {
 	page( '/post/:site?', siteSelection, redirect, makeLayout, clientRender );
 
 	page( '/page', siteSelection, sites, makeLayout, clientRender );
+
+	page( '/page/new', () => page.redirect( '/page' ) ); // redirect from beep-beep-boop
 
 	page(
 		'/page/:site/:post?',
