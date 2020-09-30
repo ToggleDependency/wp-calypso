@@ -35,10 +35,10 @@ import { notifyDesktopCannotOpenEditor } from 'state/desktop/actions';
 import { requestSite } from 'state/sites/actions';
 
 function determinePostType( context ) {
-	if ( context.path.startsWith( '/block-editor/post/' ) ) {
+	if ( context.path.startsWith( '/post/' ) ) {
 		return 'post';
 	}
-	if ( context.path.startsWith( '/block-editor/page/' ) ) {
+	if ( context.path.startsWith( '/page/' ) ) {
 		return 'page';
 	}
 
