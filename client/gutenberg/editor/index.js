@@ -7,7 +7,7 @@ import page from 'page';
  * Internal dependencies
  */
 import { siteSelection, sites } from 'my-sites/controller';
-import { authenticate, post, redirect, siteEditor } from './controller';
+import { authenticate, post, redirect, siteEditor, exitPost } from './controller';
 import config from 'config';
 import { makeLayout, render as clientRender } from 'controller';
 
@@ -40,6 +40,8 @@ export default function () {
 
 	page( '/post/:site?', siteSelection, redirect, makeLayout, clientRender );
 
+	page.exit( '/post/:site?/:post?', exitPost );
+
 	page( '/page', siteSelection, sites, makeLayout, clientRender );
 
 	page( '/page/new', () => page.redirect( '/page' ) ); // redirect from beep-beep-boop
@@ -54,6 +56,8 @@ export default function () {
 		clientRender
 	);
 	page( '/page/:site?', siteSelection, redirect, makeLayout, clientRender );
+
+	page.exit( '/page/:site?/:post?', exitPost );
 
 	if ( config.isEnabled( 'manage/custom-post-types' ) ) {
 		page( '/edit/:customPostType', siteSelection, sites, makeLayout, clientRender );
