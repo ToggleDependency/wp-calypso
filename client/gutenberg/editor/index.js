@@ -92,6 +92,5 @@ export default function () {
 		page.redirect( `/page/${ site }/` );
 	} );
 
-	page( '/*/*', '/post' );
-	page( '/:site', ( context ) => page.redirect( `/block-editor/post/${ context.params.site }` ) );
+	page( '/block-editor/:site', ( context ) => page.redirect( `/post/${ context.params.site }` ) );
 }
