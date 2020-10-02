@@ -8,6 +8,7 @@ import { current as currentPage } from 'page';
  * Internal dependencies
  */
 import {
+	addItemsToCart,
 	addPlanToCart,
 	createAccount,
 	createSite,
@@ -28,6 +29,7 @@ import { abtest } from 'lib/abtest';
 import { generateSteps } from './steps-pure';
 
 export default generateSteps( {
+	addItemsToCart,
 	addPlanToCart,
 	createAccount,
 	createSite,
