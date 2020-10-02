@@ -2,6 +2,7 @@
  * External dependencies
  */
 import page from 'page';
+import { recordTracksEvent } from '@automattic/calypso-analytics';
 
 /**
  * Internal dependencies
@@ -10,6 +11,23 @@ import { siteSelection, sites } from 'my-sites/controller';
 import { authenticate, post, redirect, siteEditor, exitPost } from './controller';
 import config from 'config';
 import { makeLayout, render as clientRender } from 'controller';
+
+function trackOldRouteRedirect( postType, siteId, postId ) {
+	const props = {};
+	if ( postType ) {
+		props.post_type = postType;
+	}
+
+	if ( siteId ) {
+		props.site_id = siteId;
+	}
+
+	if ( postId ) {
+		props.post_id = postId;
+	}
+
+	recordTracksEvent( `calypso_editor_old_route_redirect`, props );
+}
 
 export default function () {
 	page( '', '/post' );
@@ -77,6 +95,7 @@ export default function () {
 	page( '/block-editor/post/', '/post' );
 	page( '/block-editor/post/:site/:post?', ( { params = {} } ) => {
 		const { site, post: postId } = params;
+		trackOldRouteRedirect( 'post', site, postId );
 		if ( postId ) {
 			return page.redirect( `/post/${ site }/${ postId }` );
 		}
@@ -86,6 +105,8 @@ export default function () {
 	page( '/block-editor/page/', '/page' );
 	page( '/block-editor/page/:site/:page?', ( { params = {} } ) => {
 		const { site, page: pageId } = params;
+		trackOldRouteRedirect( 'page', site, pageId );
+
 		if ( pageId ) {
 			return page.redirect( `/page/${ site }/${ pageId }` );
 		}
