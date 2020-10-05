@@ -875,6 +875,14 @@ export function isSiteTopicFulfilled( stepName, defaultDependencies, nextProps )
 	}
 }
 
+export function isSecureYourBrandFulfilled( stepName, deefaultDependencies, nextProps ) {
+	const hasdDomainItemInDependencyStore = has( nextProps, 'signupDependencies.domainItem' );
+	const domainItem = get( nextProps, 'signupDependencies.domainItem', false );
+	if ( hasdDomainItemInDependencyStore && isEmpty( domainItem ) ) {
+		flows.excludeStep( stepName );
+	}
+}
+
 export function addOrRemoveFromProgressStore( stepName, defaultDependencies, nextProps ) {
 	const hasdDomainItemInDependencyStore = has( nextProps, 'signupDependencies.domainItem' );
 	const hasCartItemInDependencyStore = has( nextProps, 'signupDependencies.cartItem' );

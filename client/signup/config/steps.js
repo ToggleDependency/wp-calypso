@@ -22,6 +22,7 @@ import {
 	isDomainFulfilled,
 	isSiteTypeFulfilled,
 	isSiteTopicFulfilled,
+	isSecureYourBrandFulfilled,
 	addOrRemoveFromProgressStore,
 	maybeRemoveStepForUserlessCheckout,
 } from 'lib/signup/step-actions';
@@ -44,6 +45,7 @@ export default generateSteps( {
 	isDomainFulfilled,
 	isSiteTypeFulfilled,
 	isSiteTopicFulfilled,
+	isSecureYourBrandFulfilled,
 	addOrRemoveFromProgressStore,
 	maybeRemoveStepForUserlessCheckout,
 } );

@@ -36,6 +36,7 @@ export function generateSteps( {
 	isDomainFulfilled = noop,
 	isSiteTypeFulfilled = noop,
 	isSiteTopicFulfilled = noop,
+	isSecureYourBrandFulfilled = noop,
 	addOrRemoveFromProgressStore = noop,
 	maybeRemoveStepForUserlessCheckout = noop,
 } = {} ) {
@@ -348,6 +349,7 @@ export function generateSteps( {
 			dependencies: [ 'domainItem', 'siteSlug' ],
 			providesDependencies: [ 'cartItems' ],
 			apiRequestFunction: addItemsToCart,
+			fulfilledStepCallback: isSecureYourBrandFulfilled,
 		},
 
 		'domains-store': {
