@@ -4,13 +4,15 @@
 import { useSelector } from 'react-redux';
 import { useTranslate } from 'i18n-calypso';
 import React, { FunctionComponent, useEffect, useMemo } from 'react';
+import type { AnyAction } from 'redux';
 
 /**
  * Internal dependencies
  */
-import { getHttpData, DataState } from 'state/data-layer/http-data';
+import type { SiteId } from 'types';
+import { getHttpData, requestHttpData, DataState } from 'state/data-layer/http-data';
+import { http } from 'state/data-layer/wpcom-http/actions';
 import { getProviderNameFromId, topHosts, otherHosts } from '../host-info';
-import { getRequestHosingProviderGuessId, requestHosingProviderGuess } from 'state/data-getters';
 import { getSelectedSiteId, getSelectedSiteSlug } from 'state/ui/selectors';
 import Badge from 'components/badge';
 import Gridicon from 'components/gridicon';
@@ -19,6 +21,25 @@ import Gridicon from 'components/gridicon';
  * Style dependencies
  */
 import './style.scss';
+
+function getRequestHostingProviderGuessId( siteId: SiteId ) {
+	return `site-hosting-provider-guess-${ siteId }`;
+}
+
+function requestHostingProviderGuess( siteId: SiteId ) {
+	const requestId = getRequestHostingProviderGuessId( siteId );
+	return requestHttpData(
+		requestId,
+		http( {
+			method: 'GET',
+			path: `/sites/${ siteId }/hosting-provider`,
+			apiNamespace: 'wpcom/v2',
+		} ) as AnyAction,
+		{
+			fromApi: () => ( { guess } ) => [ [ requestId, guess ] ],
+		}
+	);
+}
 
 interface Props {
 	onHostChange: ( newHost: string | null ) => void;
@@ -32,9 +53,9 @@ const HostSelection: FunctionComponent< Props > = ( { onHostChange } ) => {
 
 	const {
 		state: providerGuessState,
-		data: { guess } = { guess: null },
+		data: guess = null,
 		// error: providerGuessError,
-	} = useSelector( () => getHttpData( getRequestHosingProviderGuessId( siteId ) ) );
+	} = useSelector( () => getHttpData( getRequestHostingProviderGuessId( siteId as SiteId ) ) );
 
 	const loadingProviderGuess = ! [ DataState.Success, DataState.Failure ].includes(
 		providerGuessState
@@ -53,7 +74,7 @@ const HostSelection: FunctionComponent< Props > = ( { onHostChange } ) => {
 	}, [ guess ] );
 
 	useEffect( () => {
-		requestHosingProviderGuess( siteId );
+		requestHostingProviderGuess( siteId as SiteId );
 	}, [ siteId ] );
 
 	return (
