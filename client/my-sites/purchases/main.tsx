@@ -13,6 +13,7 @@ import Subscriptions from './subscriptions';
 import { BillingHistoryList } from 'me/billing-history/main';
 import DocumentHead from 'components/data/document-head';
 import FormattedHeader from 'components/formatted-header';
+import PurchasesNavigation from './navigation';
 import ManagePurchase from 'me/purchases/manage-purchase';
 import CancelPurchase from 'me/purchases/cancel-purchase';
 import ConfirmCancelDomain from 'me/purchases/confirm-cancel-domain';
@@ -29,11 +30,12 @@ import AddCardDetails from 'me/purchases/payment/add-card-details';
 import EditCardDetails from 'me/purchases/payment/edit-card-details';
 import PageViewTracker from 'lib/analytics/page-view-tracker';
 import QueryBillingTransactions from 'components/data/query-billing-transactions';
-import { getSelectedSiteId } from 'state/ui/selectors';
+import { getSelectedSiteId, getSelectedSiteSlug } from 'state/ui/selectors';
 import { CompactCard } from '@automattic/components';
 
 export function Purchases() {
 	const translate = useTranslate();
+	const siteSlug = useSelector( getSelectedSiteSlug );
 
 	return (
 		<Main className="purchases is-wide-layout">
@@ -45,6 +47,7 @@ export function Purchases() {
 				headerText={ translate( 'Billing' ) }
 				align="left"
 			/>
+			<PurchasesNavigation sectionTitle={ 'Purchases' } siteSlug={ siteSlug } />
 
 			<Subscriptions />
 		</Main>
@@ -208,7 +211,8 @@ export function PurchaseCancelDomain( {
 }
 
 export function BillingHistory() {
-	const selectedSiteId = useSelector( ( state ) => getSelectedSiteId( state ) );
+	const selectedSiteId = useSelector( getSelectedSiteId );
+	const siteSlug = useSelector( getSelectedSiteSlug );
 	const translate = useTranslate();
 
 	return (
@@ -223,6 +227,8 @@ export function BillingHistory() {
 				headerText={ translate( 'Billing' ) }
 				align="left"
 			/>
+			<PurchasesNavigation sectionTitle={ 'Billing History' } siteSlug={ siteSlug } />
+
 			<BillingHistoryList siteId={ selectedSiteId } />
 			<CompactCard href="/me/purchases/billing">
 				{ translate( 'View all billing history and receipts' ) }
