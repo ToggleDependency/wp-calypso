@@ -30,8 +30,6 @@ function trackOldRouteRedirect( postType, siteId, postId ) {
 }
 
 export default function () {
-	page( '', '/post' );
-
 	page(
 		'/site-editor/:site?',
 		siteSelection,
