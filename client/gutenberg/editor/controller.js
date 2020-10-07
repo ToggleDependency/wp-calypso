@@ -190,11 +190,7 @@ export const redirect = async ( context, next ) => {
 		return window.location.replace( addQueryArgs( context.query, url ) );
 	}
 
-	if ( shouldLoadGutenberg( state, siteId ) ) {
-		return next();
-	}
-
-	return page.redirect( `/post/${ getSelectedSiteSlug( state ) }` );
+	return next();
 };
 
 function getPressThisData( query ) {
