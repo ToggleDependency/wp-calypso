@@ -8,11 +8,11 @@ import { localize } from 'i18n-calypso';
 /**
  * Internal Dependencies
  */
-import { billingHistoryReceipt } from 'me/purchases/paths';
+import { billingHistoryReceipt } from 'calypso/me/purchases/paths';
 import TransactionsTable from './transactions-table';
-import isSendingBillingReceiptEmail from 'state/selectors/is-sending-billing-receipt-email';
-import { recordGoogleEvent } from 'state/analytics/actions';
-import { sendBillingReceiptEmail as sendBillingReceiptEmailAction } from 'state/billing-transactions/actions';
+import isSendingBillingReceiptEmail from 'calypso/state/selectors/is-sending-billing-receipt-email';
+import { recordGoogleEvent } from 'calypso/state/analytics/actions';
+import { sendBillingReceiptEmail as sendBillingReceiptEmailAction } from 'calypso/state/billing-transactions/actions';
 
 class BillingHistoryTable extends React.Component {
 	recordClickEvent = ( eventAction ) => {
@@ -41,9 +41,12 @@ class BillingHistoryTable extends React.Component {
 		}
 
 		return (
-			<a href="#" onClick={ this.getEmailReceiptLinkClickHandler( receiptId ) }>
+			<button
+				className="billing-history__email-button"
+				onClick={ this.getEmailReceiptLinkClickHandler( receiptId ) }
+			>
 				{ translate( 'Email receipt' ) }
-			</a>
+			</button>
 		);
 	};
 
@@ -77,6 +80,7 @@ class BillingHistoryTable extends React.Component {
 
 		return (
 			<TransactionsTable
+				siteId={ this.props.siteId }
 				transactionType="past"
 				header
 				emptyTableText={ emptyTableText }
@@ -87,14 +91,16 @@ class BillingHistoryTable extends React.Component {
 	}
 }
 
+function getIsSendingReceiptEmail( state ) {
+	return function isSendingBillingReceiptEmailForReceiptId( receiptId ) {
+		return isSendingBillingReceiptEmail( state, receiptId );
+	};
+}
+
 export default connect(
 	( state ) => {
-		const sendingBillingReceiptEmail = ( receiptId ) => {
-			return isSendingBillingReceiptEmail( state, receiptId );
-		};
-
 		return {
-			sendingBillingReceiptEmail,
+			sendingBillingReceiptEmail: getIsSendingReceiptEmail( state ),
 		};
 	},
 	{
