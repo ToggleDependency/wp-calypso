@@ -35,6 +35,9 @@ function getDefaultFlowName() {
 		return 'onboarding-plan-first';
 	}
 
+	if ( 'test' === abtest( 'secureYourBrand' ) ) {
+		return 'onboarding-secure-your-brand';
+	}
 	return defaultFlowName;
 }
 
