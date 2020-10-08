@@ -535,13 +535,6 @@ export async function verifyTextPresent( driver, selector, text ) {
 	return await this.isElementPresent( driver, element );
 }
 
-export function getElementByText( driver, selector, text ) {
-	return async () => {
-		const allElements = await driver.findElements( selector );
-		return await webdriver.promise.filter( allElements, getInnerTextMatcherFunction( text ) );
-	};
-}
-
 export async function clearTextArea( driver, selector ) {
 	const textArea = await driver.findElement( selector );
 	const textValue = await textArea.getText();

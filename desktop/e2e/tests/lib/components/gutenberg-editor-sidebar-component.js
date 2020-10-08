@@ -63,10 +63,8 @@ class GutenbergEditorSidebarComponent extends AsyncBaseContainer {
 	}
 
 	async _expandOrCollapseSectionByText( text, expand = true ) {
-		const sectionSelector = await driverHelper.getElementByText(
-			this.driver,
-			By.css( '.components-panel__body-toggle' ),
-			text
+		const sectionSelector = By.xpath(
+			`//div[@class="components-panel__body-toggle" and text()="${ text }"]`
 		);
 		await driverHelper.waitTillPresentAndDisplayed( this.driver, sectionSelector );
 		const sectionButton = await this.driver.findElement( sectionSelector );
